@@ -14,10 +14,10 @@ function LinkIconBtn({ link }) {
   );
 }
 
-function CourseItem({ title, description, thumbnail, isFavorite, link }) {
+function CourseItem({ title, description, thumbnail, isFavorite, link, id,onFavorite }) {
   function handleFavorite(e) {
     e.stopPropagation();
-    alert(isFavorite ? "좋아요" : "모르겠어요");
+    onFavorite(id, !isFavorite)
   }
   function handleItemClick() {
     open(link, "_blank");
