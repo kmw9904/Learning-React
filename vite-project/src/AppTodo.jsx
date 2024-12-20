@@ -1,67 +1,69 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import "./App.css";
 import TodoList from "./components/todo/TodoList";
+import todoReducer from "./reducer/todo-reducer";
+import { useImmerReducer } from "use-immer";
 
 function AppTodo(props) {
   const [todoText, setTodoText] = useState("");
-  const [todos, setTodos] = useState([
+  const [todos, dispatch] = useImmerReducer(todoReducer, [
     { id: 0, text: "HTML&CSS 공부하기", done: false },
     { id: 1, text: "자바스크립트 공부하기", done: false },
   ]);
+
   const [insertAt, setInsertAt] = useState(todos.length - 1);
 
   const handleTodoTextChange = (e) => {
     setTodoText(e.target.value);
   };
 
+  // 1] added
   const handleAddTodo = (e) => {
-    const nextId = todos.length;
-    // push X
-    setTodos([...todos, { id: nextId, text: todoText }]);
+    dispatch({
+      type: "added",
+      nextId: todos.length,
+      todoText,
+    });
+    // const nextId = todos.length;
+    // // push X
+    // setTodos([...todos, { id: nextId, text: todoText, done: false }]);
+    setTodoText("");
+  };
+  // 2] added_index
+  const handleAddTodoByIndex = (e) => {
+    dispatch({
+      type: "added_index",
+      insertAt,
+      nextId: todos.length,
+      todoText,
+    });
     setTodoText("");
   };
 
+  // 3] deleted
   const handleDeleteTodo = (deleteId) => {
-    const newTodos = todos.filter((item) => item.id !== deleteId);
-    setTodos(newTodos);
+    dispatch({ type: "deleted", deleteId });
+  };
+
+  // 4] done
+  const handleToggleTodo = (id, done) => {
+    dispatch({ type: "done", id, done });
+  };
+
+  // 5] reverse
+  const handleReverse = () => {
+    dispatch({ type: "reverse" });
   };
 
   const handleEnterAddTodo = (e) => {
-    if (e.keyCode === 13) {
+    console.log("isComposing :", e.nativeEvent.isComposing);
+    if (e.keyCode === 13 && e.nativeEvent.isComposing === false) {
       handleAddTodo();
     }
   };
 
-  const handleToggleTodo = (id, done) => {
-    // 기존 배열 안의 객체 속성을 변경
-    const nextTodos = todos.map((item) => {
-      if (item.id === id) {
-        return { ...item, done };
-      }
-      return item;
-    });
-    setTodos(nextTodos);
-  };
-
   const handleInsertAt = (e) => {
     setInsertAt(e.target.value);
-  };
-
-  const handleAddTodoByIndex = (e) => {
-    const nextId = todos.length;
-    const newTodos = [
-      // 삽입 지점 이전 항목
-      ...todos.slice(0, insertAt),
-      { id: nextId, text: todoText, done: false },
-      // 삽입 지점 이후 항목
-      ...todos.slice(insertAt),
-    ];
-    setTodos(newTodos);
-    setTodoText("");
-  };
-
-  const handleReverse = () => {
-    setTodos(todos.toReversed());
   };
 
   return (
