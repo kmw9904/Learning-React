@@ -13,7 +13,7 @@ function Courses() {
       });
     return () => {
       console.log("연결 해제!");
-    };
+    };``
   }, [filter]);
 
   return (
