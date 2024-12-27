@@ -4,8 +4,8 @@ import { TodoContext, TodoDispatchContext, useDispatch, useTodos } from "../../c
 export default function AddTodo() {
   const [todoText, setTodoText] = useState("");
 
-  useTodos()
-  useDispatch()
+  const todos = useTodos();
+  const dispatch = useDispatch();
 
   // 1] added
   const handleAddTodo = (text) => {
