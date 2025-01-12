@@ -38,5 +38,6 @@ export async function updateTitle(id, title) {
 }
 
 export async function updateCanvas(id, canvas) {
-  await canvas.put(`/${id}`, canvas)
+  await canvases.put(`/${id}`, canvas)
 }
+  
