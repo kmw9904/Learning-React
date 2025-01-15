@@ -37,7 +37,7 @@ function Header() {
         <button className="md:hidden" onClick={toggleMenu}>
           <FaBars />
         </button>
-        <Button>짐코딩 강의</Button>
+        <Button className="hidden md:block">명코딩 강의</Button>
       </div>
 
       {/* Mobile Menu */}
